@@ -32,7 +32,6 @@ function addTask() {
   }
   tasks.value.push(taskObj)
   newTaskText.value = ''
-  console.log(data)
 }
 </script>
 
