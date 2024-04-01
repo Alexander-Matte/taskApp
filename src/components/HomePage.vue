@@ -1,6 +1,39 @@
 <script setup>
+import dayjs from 'dayjs'
 import data from '@/data.json'
-const tasks = data.tasks
+import { ref } from 'vue'
+import TaskList from './TaskList.vue'
+import { v4 as uuidv4 } from 'uuid'
+const tasks = ref(data.tasks)
+const newTaskText = ref('')
+
+const generateTaskId = () => {
+  return uuidv4()
+}
+// Create addTask function which add task to tasks
+function addTask() {
+  if (!newTaskText.value) {
+    return
+  }
+  const taskObj = {
+    id: generateTaskId(),
+    title: newTaskText.value,
+    description: '',
+    due_date: '',
+    priority: 'med',
+    status: 'incomplete',
+    created_at: dayjs().format('DD/MM/YYYY'),
+    updated_at: '',
+    user: {
+      id: 1234,
+      name: 'John Doe',
+      email: 'john.doe@example.com'
+    }
+  }
+  tasks.value.push(taskObj)
+  newTaskText.value = ''
+  console.log(data)
+}
 </script>
 
 <template>
@@ -8,36 +41,24 @@ const tasks = data.tasks
     <h1>Task List</h1>
     <div class="row mb-3">
       <div class="col">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Add new task"
-            aria-label="Add new task"
-            aria-describedby="button-addon2"
-          />
-          <div class="input-group-append">
-            <button class="btn btn-primary" type="button" id="button-addon2">Add Task</button>
+        <form @submit.prevent="addTask">
+          <div class="input-group">
+            <input
+              v-model="newTaskText"
+              type="text"
+              class="form-control"
+              placeholder="Add new task"
+              aria-label="Add new task"
+              aria-describedby="addTaskBtn"
+            />
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit" id="addTaskBtn">Add Task</button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
-    <div id="task-list">
-      <!-- task Items -->
-      <div
-        v-for="task in tasks"
-        :key="task.id"
-        class="task-item d-flex align-items-center d-flex align-items-center"
-      >
-        <div class="task-status"></div>
-        <div class="task-title">{{ task.title }}</div>
-        <div class="ms-auto">
-          <button type="button" class="btn btn-primary btn-sm mr-2">Edit</button>
-          <button type="button" class="btn btn-danger btn-sm">Delete</button>
-        </div>
-      </div>
-      <!-- End task Items -->
-    </div>
+    <TaskList :tasks="tasks" />
   </div>
 </template>
