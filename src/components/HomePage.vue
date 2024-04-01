@@ -1,4 +1,6 @@
 <script setup>
+import data from '@/data.json'
+const tasks = data.tasks
 </script>
 
 <template>
@@ -23,45 +25,13 @@
 
     <div id="task-list">
       <!-- task Items -->
-      <div class="task-item d-flex align-items-center d-flex align-items-center">
+      <div
+        v-for="task in tasks"
+        :key="task.id"
+        class="task-item d-flex align-items-center d-flex align-items-center"
+      >
         <div class="task-status"></div>
-        <div class="task-title">Task 1</div>
-        <div class="ms-auto">
-          <button type="button" class="btn btn-primary btn-sm mr-2">Edit</button>
-          <button type="button" class="btn btn-danger btn-sm">Delete</button>
-        </div>
-      </div>
-
-      <div class="task-item d-flex align-items-center">
-        <div class="task-status"></div>
-        <div class="task-title">Task 2</div>
-        <div class="ms-auto" iv>
-          <button type="button" class="btn btn-primary btn-sm mr-2">Edit</button>
-          <button type="button" class="btn btn-danger btn-sm">Delete</button>
-        </div>
-      </div>
-
-      <div class="task-item d-flex align-items-center">
-        <div class="task-status"></div>
-        <div class="task-title">Task 3</div>
-        <div class="ms-auto">
-          <button type="button" class="btn btn-primary btn-sm mr-2">Edit</button>
-          <button type="button" class="btn btn-danger btn-sm">Delete</button>
-        </div>
-      </div>
-
-      <div class="task-item d-flex align-items-center">
-        <div class="task-status"></div>
-        <div class="task-title">Task 4</div>
-        <div class="ms-auto">
-          <button type="button" class="btn btn-primary btn-sm mr-2">Edit</button>
-          <button type="button" class="btn btn-danger btn-sm">Delete</button>
-        </div>
-      </div>
-
-      <div class="task-item d-flex align-items-center">
-        <div class="task-status"></div>
-        <div class="task-title">Task 5</div>
+        <div class="task-title">{{ task.title }}</div>
         <div class="ms-auto">
           <button type="button" class="btn btn-primary btn-sm mr-2">Edit</button>
           <button type="button" class="btn btn-danger btn-sm">Delete</button>
