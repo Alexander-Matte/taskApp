@@ -38,7 +38,7 @@ function addTask() {
 
 <template>
   <div class="container mt-5">
-    <h1>Task List</h1>
+    <h1 class="text-center">Task List</h1>
     <div class="row mb-3">
       <div class="col">
         <form @submit.prevent="addTask">
