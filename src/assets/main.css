@@ -14,8 +14,3 @@ a,
   transition: 0.4s;
   padding: 3px;
 }
-
-textarea {
-  width: 100%;
-  background-color: var(--color-background);
-}
