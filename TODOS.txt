@@ -2,20 +2,20 @@
     create branch feature/task-last-edited
 
 - Create Pinia store to handle Task state management
-    create branch feature/create-pinia-store
+    create branch feature/${date}create-pinia-store
 
 - Refactor code to work with Pina store to handle State management
-    create branch feature/refactor-with-pinia
+    create branch feature/${date}refactor-with-pinia
 
 - Rework Task Title editing so the user knows how to save their changes
-    create branch feature/task-title-on-save
+    create branch feature/${date}task-title-on-save
 
 - Add local persistence and remove dummy Data
-    create branch feature/add-local-persistence
+    create branch feature/${date}add-local-persistence
 
 - Fix text highlighting when toggling tasks as complete
-    create branch feature/text-highlight-fix
+    create branch bug/${date}text-highlight-fix
 
-- Create git branching naming convention file
-    create branch feature/define-git-branch-convention
+- Create git branching naming convention file ✅
+    create branch feature/${date}define-git-branch-convention
 
