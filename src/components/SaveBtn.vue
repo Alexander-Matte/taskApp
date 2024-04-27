@@ -11,6 +11,8 @@ const props = defineProps({
     required: true
   }
 })
+const emit = defineEmits(['saveComplete'])
+
 const tasks = ref(data.tasks)
 function taskById(id) {
   return tasks.value.find((task) => task.id === id)
@@ -18,6 +20,7 @@ function taskById(id) {
 
 function saveInput() {
   taskById(props.task.id).description = props.description
+  emit('saveComplete')
 }
 </script>
 <template>
