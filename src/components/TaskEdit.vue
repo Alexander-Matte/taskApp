@@ -2,6 +2,8 @@
 import data from '@/data.json'
 import { ref } from 'vue'
 import DescriptionEdit from './DescriptionEdit.vue'
+import NavBar from './NavBar.vue'
+
 const props = defineProps({
   id: {
     type: String,
@@ -33,7 +35,8 @@ function editTaskTitle() {
 </script>
 <template>
   <div class="container mt-5">
-    <div class="title-container">
+    <NavBar />
+    <div class="title-container pt-3">
       <h1 @mouseover="showEditIcon = true" @mouseleave="showEditIcon = false" v-if="!titleEditing">
         {{ task.title }}
         <span v-if="showEditIcon" class="edit-icon" @click="editTaskTitle">
