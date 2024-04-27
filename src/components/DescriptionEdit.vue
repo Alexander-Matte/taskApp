@@ -14,6 +14,8 @@ const editedDescription = ref(task.description)
 function taskById(id) {
   return tasks.value.find((task) => task.id === id)
 }
+
+const emit = defineEmits(['saveComplete'])
 </script>
 <template>
   <textarea
@@ -22,10 +24,10 @@ function taskById(id) {
     id="taskDescription"
     cols="30"
     rows="10"
-    placeholder="Add a little discription for your task at hand..."
+    placeholder="Add a short discription for your task at hand..."
   ></textarea>
   <div class="d-flex justify-content-end">
-    <SaveBtn :description="editedDescription" :task="task" />
+    <SaveBtn :description="editedDescription" :task="task" @click="emit('saveComplete')" />
   </div>
 </template>
 
