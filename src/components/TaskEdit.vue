@@ -63,7 +63,7 @@ function editTaskTitle() {
       <p v-else>Last Edited: Not edited yet</p>
       <hr />
       <h2>Description:</h2>
-      <!-- If there is a description, then load the description with the editing button -->
+      <!-- If there is already description, then load the description with the editing button -->
 
       <div v-if="task.description && descriptionEditing === false">
         <p>{{ task.description }}</p>
@@ -79,7 +79,8 @@ function editTaskTitle() {
         </div>
       </div>
       <!-- Otherwise, load the textarea with the save button -->
-      <DescriptionEdit :id="task.id" v-else />
+      <!-- emit in actually saveComplete but Vue recommends using kebab-cased listener in the parent -->
+      <DescriptionEdit :id="task.id" @save-complete="descriptionEditing = false" v-else />
     </div>
   </div>
 </template>
