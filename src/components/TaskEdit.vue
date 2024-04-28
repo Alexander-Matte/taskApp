@@ -1,6 +1,8 @@
 <script setup>
+import Toastify from 'toastify-js'
+import 'toastify-js/src/toastify.css'
 import data from '@/data.json'
-import { ref } from 'vue'
+import { ref, onMounted, watchEffect } from 'vue'
 import DescriptionEdit from './DescriptionEdit.vue'
 import NavBar from './NavBar.vue'
 
@@ -10,28 +12,59 @@ const props = defineProps({
     required: true
   }
 })
-
 const tasks = ref(data.tasks)
 const task = taskById(props.id)
 let titleEditing = ref(false)
 let descriptionEditing = ref(false)
 const editedTitle = ref(task.title)
+const titleInputRef = ref(null) // Define a ref for the input element
+
 function taskById(id) {
   return tasks.value.find((task) => task.id === id)
 }
+
 function saveEditedTitle() {
   if (editedTitle.value.trim() !== '') {
     titleEditing.value = false
     taskById(props.id).title = editedTitle.value
   } else {
-    // TODO: Add error message so user knows they cannot enter emtpy string
+    // TODO: Add error message so user knows they cannot enter empty string
     titleEditing.value = false
   }
 }
 
 function editTaskTitle() {
   titleEditing.value = true
+  Toastify({
+    text: 'Press enter to save!',
+    duration: 5000,
+    newWindow: true,
+    close: true,
+    gravity: 'top', // `top` or `bottom`
+    position: 'center', // `left`, `center` or `right`
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: 'linear-gradient(to right, #00b09b, #96c93d)'
+    },
+    onClick: function () {} // Callback after click
+  }).showToast()
+
+  // Focus the input field when editing title
+  if (titleInputRef.value) {
+    titleInputRef.value.focus()
+  }
 }
+
+// Ensure input field is focused when titleEditing changes to true
+onMounted(() => {
+  watchEffect(() => {
+    if (titleEditing.value) {
+      if (titleInputRef.value) {
+        titleInputRef.value.focus()
+      }
+    }
+  })
+})
 </script>
 <template>
   <div class="container mt-5">
@@ -50,6 +83,7 @@ function editTaskTitle() {
       </h1>
       <input
         class="h1"
+        ref="titleInputRef"
         v-else
         v-model="editedTitle"
         @keyup.enter="saveEditedTitle"
@@ -100,3 +134,5 @@ input {
   color: var(--color-text);
 }
 </style>
+
+
