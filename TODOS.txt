@@ -16,3 +16,5 @@
 - Create git branching naming convention file ✅ 
     create branch feature/${date}/define-git-branch-convention
 
+- Deploy project using Vercel 
+
