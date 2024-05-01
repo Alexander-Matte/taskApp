@@ -1,11 +1,11 @@
-- Create last-edited logic for tasks
+- Create last-edited logic for tasks ✅
     create branch feature/${date}/task-last-edited
 
 - Create Pinia store to handle Task state management and implement everywhere in codebase
     create branch feature/${date}/create-pinia-store
 
-- Rework Task Title editing so the user knows how to save their changes
-    create branch feature/${date}/task-title-on-save ✅ 
+- Rework Task Title editing so the user knows how to save their changes ✅
+    create branch feature/${date}/task-title-on-save  
 
 - Add local persistence and remove dummy Data
     create branch feature/${date}/add-local-persistence

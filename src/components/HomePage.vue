@@ -22,7 +22,7 @@ function addTask() {
     due_date: '',
     priority: 'med',
     status: 'incomplete',
-    created_at: dayjs().format('DD/MM/YYYY'),
+    created_at: dayjs().format('DD-MM-YYYY HH:mm:ss'),
     updated_at: '',
     user: {
       id: 1234,

@@ -5,6 +5,7 @@ import data from '@/data.json'
 import { ref, onMounted, watchEffect } from 'vue'
 import DescriptionEdit from './DescriptionEdit.vue'
 import NavBar from './NavBar.vue'
+import dayjs from 'dayjs'
 
 const props = defineProps({
   id: {
@@ -24,9 +25,10 @@ function taskById(id) {
 }
 
 function saveEditedTitle() {
-  if (editedTitle.value.trim() !== '') {
+  if (editedTitle.value.trim() !== '' && editedTitle.value != task.title) {
     titleEditing.value = false
-    taskById(props.id).title = editedTitle.value
+    task.title = editedTitle.value
+    task.updated_at = dayjs().format('DD-MM-YYYY HH:mm:ss')
   } else {
     // TODO: Add error message so user knows they cannot enter empty string
     titleEditing.value = false
