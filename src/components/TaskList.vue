@@ -1,16 +1,9 @@
 <script setup>
 import { ref } from 'vue'
+import { useTaskStore } from '@/stores/TaskStore'
 
-const props = defineProps({
-  tasks: {
-    type: Array,
-    required: true
-  }
-})
-const tasks = ref(props.tasks)
-function deleteTask(index) {
-  tasks.value.splice(index, 1)
-}
+const store = useTaskStore()
+store.fetchData()
 
 const toggleCompleted = (task) => {
   task.completed = !task.completed
@@ -20,9 +13,9 @@ const toggleCompleted = (task) => {
 
 
 <template>
-  <div id="task-list">
+  <div v-if="store.tasks.length" id="task-list">
     <div
-      v-for="(task, index) in tasks"
+      v-for="task in store.tasks"
       :key="task.id"
       class="task-item d-flex align-items-center d-flex align-items-center"
     >
@@ -56,7 +49,7 @@ const toggleCompleted = (task) => {
           <router-link :to="{ name: 'task', params: { id: task.id } }">Edit</router-link>
         </button>
 
-        <button type="button" class="btn btn-sm" @click="deleteTask(index)">
+        <button type="button" class="btn btn-sm" @click="store.deleteTask(task)">
           <svg style="width: 1.7em" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
             <path
               fill="#FF0000"
@@ -67,6 +60,7 @@ const toggleCompleted = (task) => {
       </div>
     </div>
   </div>
+  <div class="text-center" v-else>No tasks available, time to relax!</div>
 </template>
 
 
