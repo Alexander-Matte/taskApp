@@ -1,10 +1,11 @@
 <script setup>
 import dayjs from 'dayjs'
-import data from '@/data.json'
 import { ref } from 'vue'
 import TaskList from './TaskList.vue'
 import { v4 as uuidv4 } from 'uuid'
-const tasks = ref(data.tasks)
+import { useTaskStore } from '@/stores/TaskStore'
+
+const store = useTaskStore()
 const newTaskText = ref('')
 
 const generateTaskId = () => {
@@ -15,7 +16,7 @@ function addTask() {
   if (!newTaskText.value) {
     return
   }
-  const taskObj = {
+  const newTask = {
     id: generateTaskId(),
     title: newTaskText.value,
     description: '',
@@ -30,7 +31,7 @@ function addTask() {
       email: 'john.doe@example.com'
     }
   }
-  tasks.value.push(taskObj)
+  store.addTask(newTask)
   newTaskText.value = ''
 }
 </script>
@@ -58,6 +59,6 @@ function addTask() {
       </div>
     </div>
 
-    <TaskList :tasks="tasks" />
+    <TaskList />
   </div>
 </template>
