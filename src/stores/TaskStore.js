@@ -13,6 +13,10 @@ export const useTaskStore = defineStore('tasks', () => {
       }
       const data = await response.json()
       tasks.value = data.tasks
+      // Save the fetched data to local storage if it's not already saved
+      if (!localStorage.getItem('taskStore')) {
+        saveState()
+      }
     } catch (error) {
       console.error('Error fetching tasks:', error)
     }
@@ -63,9 +67,13 @@ export const useTaskStore = defineStore('tasks', () => {
     }
   }
 
-  // Call restoreState on application initialization
-  fetchData()
+  // Restore state from local storage
   restoreState()
+
+  // Fetch data only if tasks array is empty or if local storage is empty
+  if (!localStorage.getItem('taskStore')) {
+    fetchData()
+  }
 
   return {
     addTask,
