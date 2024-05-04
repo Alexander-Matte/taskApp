@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/components/HomePage.vue'
-import TaskEdit from '@/components/TaskEdit.vue'
+import TaskView from '@/components/TaskView.vue'
 import { useTaskStore } from '@/stores/TaskStore'
 import NotFound from '@/components/NotFound.vue'
 
@@ -15,7 +15,7 @@ const router = createRouter({
     {
       path: '/task/:id',
       name: 'task',
-      component: TaskEdit,
+      component: TaskView,
       props: true,
       // check if task exists and handle redirect based on result
       beforeEnter(to, from, next) {
