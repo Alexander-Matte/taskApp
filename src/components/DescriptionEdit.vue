@@ -1,25 +1,20 @@
 <script setup>
 import { ref } from 'vue'
-import data from '@/data.json'
 import SaveBtn from './SaveBtn.vue'
+import { useTaskStore } from '@/stores/TaskStore'
 const props = defineProps({
   id: {
     type: String,
     required: true
   }
 })
-const tasks = ref(data.tasks)
-const task = taskById(props.id)
-const editedDescription = ref(task.description)
-function taskById(id) {
-  return tasks.value.find((task) => task.id === id)
-}
-
-const emit = defineEmits(['saveComplete'])
+const task = ref(null)
+const store = useTaskStore()
+task.value = store.getTaskById(props.id)
 </script>
 <template>
   <textarea
-    v-model="editedDescription"
+    v-model="task.description"
     name="description"
     id="taskDescription"
     cols="30"
@@ -27,7 +22,7 @@ const emit = defineEmits(['saveComplete'])
     placeholder="Add a short discription for your task at hand..."
   ></textarea>
   <div class="d-flex justify-content-end">
-    <SaveBtn :description="editedDescription" :task="task" @click="emit('saveComplete')" />
+    <SaveBtn :description="task.description" :id="task.id" />
   </div>
 </template>
 

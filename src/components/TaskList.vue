@@ -1,9 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useTaskStore } from '@/stores/TaskStore'
 
 const store = useTaskStore()
-store.fetchData()
+
+const tasks = computed(() => {
+  return store.tasks
+})
 
 const toggleCompleted = (task) => {
   task.completed = !task.completed
@@ -15,7 +18,7 @@ const toggleCompleted = (task) => {
 <template>
   <div v-if="store.tasks.length" id="task-list">
     <div
-      v-for="task in store.tasks"
+      v-for="task in tasks"
       :key="task.id"
       class="task-item d-flex align-items-center d-flex align-items-center"
     >
