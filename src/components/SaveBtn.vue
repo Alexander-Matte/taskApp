@@ -1,26 +1,23 @@
 <script setup>
 import { ref } from 'vue'
-import data from '@/data.json'
+import { useTaskStore } from '@/stores/TaskStore'
 const props = defineProps({
   description: {
     type: String,
     required: true
   },
-  task: {
-    type: Object,
+  id: {
+    type: String,
     required: true
   }
 })
-const emit = defineEmits(['saveComplete'])
-
-const tasks = ref(data.tasks)
-function taskById(id) {
-  return tasks.value.find((task) => task.id === id)
-}
+const task = ref(null)
+const store = useTaskStore()
+task.value = store.getTaskById(props.id)
 
 function saveInput() {
-  taskById(props.task.id).description = props.description
-  emit('saveComplete')
+  store.updateTaskDescription(props.id, props.description)
+  store.setEditingStatus(false)
 }
 </script>
 <template>
