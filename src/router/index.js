@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/components/HomePage.vue'
 import TaskEdit from '@/components/TaskEdit.vue'
-import data from '@/data.json'
+import { useTaskStore } from '@/stores/TaskStore'
 import NotFound from '@/components/NotFound.vue'
 
 const router = createRouter({
@@ -17,10 +17,11 @@ const router = createRouter({
       name: 'task',
       component: TaskEdit,
       props: true,
-      // check if thread exists and handle redirect based on result
+      // check if task exists and handle redirect based on result
       beforeEnter(to, from, next) {
-        // check if thread is available with given id
-        const taskExists = data.tasks.find((task) => task.id === to.params.id)
+        const store = useTaskStore()
+        // check if task is available with given id
+        const taskExists = store.getTaskById(to.params.id)
 
         if (taskExists) {
           return next()
