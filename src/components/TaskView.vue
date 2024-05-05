@@ -16,8 +16,6 @@ const titleInput = ref(null)
 watchEffect(() => {
   if (titleInput.value) {
     titleInput.value.focus()
-  } else {
-    // not mounted yet, or the element was unmounted (e.g. by v-if)
   }
 })
 
@@ -25,6 +23,7 @@ const store = useTaskStore()
 const task = computed(() => {
   return store.getTaskById(props.id)
 })
+const taskTitle = ref(task.value.title)
 
 const titleEditing = ref(false)
 const descriptionEditing = computed(() => {
@@ -32,8 +31,14 @@ const descriptionEditing = computed(() => {
 })
 
 function saveTitle() {
-  task.value.updated_at = dayjs().format('DD-MM-YYYY HH:mm:ss')
-  titleEditing.value = false
+  if (taskTitle.value === task.value.title) {
+    titleEditing.value = false
+    return
+  } else {
+    task.value.updated_at = dayjs().format('DD-MM-YYYY HH:mm:ss')
+    titleEditing.value = false
+    store.updateTaskTitle(task.value.id, taskTitle)
+  }
 }
 
 function editTaskTitle() {
@@ -74,9 +79,8 @@ function editTaskTitle() {
           class="h1"
           ref="titleInput"
           v-if="titleEditing"
-          v-model="task.title"
+          v-model="taskTitle"
           @keyup.enter="saveTitle"
-          @blur="saveTitle"
         />
       </div>
 
