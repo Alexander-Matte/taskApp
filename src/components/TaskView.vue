@@ -31,13 +31,51 @@ const descriptionEditing = computed(() => {
 })
 
 function saveTitle() {
-  if (taskTitle.value === task.value.title) {
+  if (taskTitle.value === task.value.title || !taskTitle.value) {
     titleEditing.value = false
+    if (taskTitle.value === task.value.title) {
+      Toastify({
+        text: 'No change to title detected',
+        duration: 3000,
+        newWindow: true,
+        className: 'warning-msg',
+        close: true,
+        gravity: 'top', // `top` or `bottom`
+        position: 'right', // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        onClick: function () {} // Callback after click
+      }).showToast()
+    } else {
+      Toastify({
+        text: 'Title cannot be empty!',
+        className: 'error-msg',
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: 'top', // `top` or `bottom`
+        position: 'right', // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        onClick: function () {} // Callback after click
+      }).showToast()
+      taskTitle.value = task.value.title
+    }
+
     return
   } else {
     task.value.updated_at = dayjs().format('DD-MM-YYYY HH:mm:ss')
     titleEditing.value = false
-    store.updateTaskTitle(task.value.id, taskTitle)
+    store.updateTaskTitle(task.value.id, taskTitle.value)
+    Toastify({
+      text: 'Title saved succcessfully!!',
+      className: 'success-msg',
+      duration: 3000,
+      newWindow: true,
+      close: true,
+      gravity: 'top', // `top` or `bottom`
+      position: 'right', // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      onClick: function () {} // Callback after click
+    }).showToast()
   }
 }
 
@@ -46,15 +84,13 @@ function editTaskTitle() {
 
   Toastify({
     text: 'Press enter to save!',
+    className: 'info-msg',
     duration: 3000,
     newWindow: true,
     close: true,
     gravity: 'top', // `top` or `bottom`
-    position: 'center', // `left`, `center` or `right`
+    position: 'right', // `left`, `center` or `right`
     stopOnFocus: true, // Prevents dismissing of toast on hover
-    style: {
-      background: 'linear-gradient(to right, #00b09b, #96c93d)'
-    },
     onClick: function () {} // Callback after click
   }).showToast()
 }
@@ -114,7 +150,7 @@ function editTaskTitle() {
   </div>
 </template>
 
-<style scoped>
+<style>
 .title-container h1 {
   gap: 10px;
 }
@@ -127,6 +163,32 @@ input {
   width: 100%;
   background-color: var(--color-background);
   color: var(--color-text);
+}
+
+.info-msg,
+.success-msg,
+.warning-msg,
+.error-msg {
+  margin: 10px 0 !important;
+  padding: 10px !important;
+  border-radius: 3px 3px 3px 3px !important;
+  background: none;
+}
+.info-msg {
+  color: #059 !important;
+  background-color: #bef !important;
+}
+.success-msg {
+  color: #270 !important;
+  background-color: #dff2bf !important;
+}
+.warning-msg {
+  color: #9f6000 !important;
+  background-color: #feefb3 !important;
+}
+.error-msg {
+  color: #d8000c !important;
+  background-color: #ffbaba !important;
 }
 </style>
 
