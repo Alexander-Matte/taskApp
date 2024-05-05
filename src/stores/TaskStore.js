@@ -44,6 +44,15 @@ export const useTaskStore = defineStore('tasks', () => {
     }
   }
 
+  function updateTaskTitle(taskId, newTitle) {
+    const taskIndex = tasks.value.findIndex((task) => task.id === taskId)
+    if (taskIndex !== -1) {
+      const updatedTask = { ...tasks.value[taskIndex], title: newTitle }
+      tasks.value.splice(taskIndex, 1, updatedTask)
+      saveState()
+    }
+  }
+
   function setEditingStatus(status) {
     descriptionEditingStatus.value = status
   }
@@ -81,6 +90,7 @@ export const useTaskStore = defineStore('tasks', () => {
     fetchData,
     getDescriptionEditingStatus,
     updateTaskDescription,
+    updateTaskTitle,
     setEditingStatus,
     getTaskById,
     tasks
