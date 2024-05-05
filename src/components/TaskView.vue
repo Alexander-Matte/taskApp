@@ -1,7 +1,7 @@
 <script setup>
 import Toastify from 'toastify-js'
 import 'toastify-js/src/toastify.css'
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import DescriptionEdit from './DescriptionEdit.vue'
 import NavBar from './NavBar.vue'
 import dayjs from 'dayjs'
@@ -10,6 +10,14 @@ const props = defineProps({
   id: {
     type: String,
     required: true
+  }
+})
+const titleInput = ref(null)
+watchEffect(() => {
+  if (titleInput.value) {
+    titleInput.value.focus()
+  } else {
+    // not mounted yet, or the element was unmounted (e.g. by v-if)
   }
 })
 
@@ -33,7 +41,7 @@ function editTaskTitle() {
 
   Toastify({
     text: 'Press enter to save!',
-    duration: 5000,
+    duration: 3000,
     newWindow: true,
     close: true,
     gravity: 'top', // `top` or `bottom`
@@ -64,6 +72,7 @@ function editTaskTitle() {
         </h1>
         <input
           class="h1"
+          ref="titleInput"
           v-if="titleEditing"
           v-model="task.title"
           @keyup.enter="saveTitle"
