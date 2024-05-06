@@ -1,7 +1,7 @@
 <script setup>
 import Toastify from 'toastify-js'
 import 'toastify-js/src/toastify.css'
-import { ref, computed, watchEffect } from 'vue'
+import { ref, computed, watchEffect, onBeforeUnmount } from 'vue'
 import DescriptionEdit from './DescriptionEdit.vue'
 import NavBar from './NavBar.vue'
 import dayjs from 'dayjs'
@@ -24,10 +24,12 @@ const task = computed(() => {
   return store.getTaskById(props.id)
 })
 const taskTitle = ref(task.value.title)
-
 const titleEditing = ref(false)
 const descriptionEditing = computed(() => {
   return store.getDescriptionEditingStatus
+})
+onBeforeUnmount(() => {
+  store.setEditingStatus(false)
 })
 
 function saveTitle() {
