@@ -88,6 +88,7 @@ export const useTaskStore = defineStore('tasks', () => {
     addTask,
     deleteTask,
     fetchData,
+    descriptionEditingStatus,
     getDescriptionEditingStatus,
     updateTaskDescription,
     updateTaskTitle,
