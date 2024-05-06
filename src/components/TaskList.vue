@@ -75,4 +75,8 @@ const toggleCompleted = (task) => {
 .task-item:hover {
   cursor: pointer;
 }
+
+.task-title {
+  user-select: none;
+}
 </style>
