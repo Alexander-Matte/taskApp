@@ -11,9 +11,8 @@ const props = defineProps({
     required: true
   }
 })
-const task = ref(null)
+
 const store = useTaskStore()
-task.value = store.getTaskById(props.id)
 
 function saveInput() {
   store.updateTaskDescription(props.id, props.description)
