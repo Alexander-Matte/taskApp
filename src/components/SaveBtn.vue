@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import { useTaskStore } from '@/stores/TaskStore'
 const props = defineProps({
   description: {

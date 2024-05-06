@@ -9,7 +9,7 @@ const tasks = computed(() => {
 })
 
 const toggleCompleted = (task) => {
-  task.completed = !task.completed
+  store.toggleTaskCompleted(task.id)
 }
 </script>
 
