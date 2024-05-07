@@ -193,5 +193,3 @@ input {
   background-color: #ffbaba !important;
 }
 </style>
-
-

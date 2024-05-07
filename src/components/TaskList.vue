@@ -13,8 +13,6 @@ const toggleCompleted = (task) => {
 }
 </script>
 
-
-
 <template>
   <div v-if="store.tasks.length" id="task-list">
     <div
@@ -65,7 +63,6 @@ const toggleCompleted = (task) => {
   </div>
   <div class="text-center" v-else>No tasks available, time to relax!</div>
 </template>
-
 
 <style scoped>
 .completed {
