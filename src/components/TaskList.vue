@@ -64,7 +64,7 @@ const toggleCompleted = (task) => {
   <div class="text-center" v-else>No tasks available, time to relax!</div>
 </template>
 
-<style scoped>
+<style>
 .completed {
   text-decoration: line-through;
 }
