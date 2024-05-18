@@ -1,5 +1,16 @@
 <template>
   <div>
+    <header>
+      <div class="d-flex justify-content-end">
+        <div>
+          <a v-if="!authStore.user.loggedIn"
+            ><router-link to="login">Login</router-link></a
+          >
+
+          <p v-else>Hello User</p>
+        </div>
+      </div>
+    </header>
     <div class="container mt-5">
       <h1 class="text-center">Task List</h1>
       <div class="row mb-3">
@@ -35,8 +46,10 @@ import { ref } from "vue";
 import TaskList from "./TaskList.vue";
 import { v4 as uuidv4 } from "uuid";
 import { useTaskStore } from "@/stores/TaskStore";
+import { useAuthStore } from "@/stores/AuthStore.js";
 
-const store = useTaskStore();
+const taskStore = useTaskStore();
+const authStore = useAuthStore();
 const newTaskText = ref("");
 
 const generateTaskId = () => {
@@ -62,7 +75,7 @@ function addTask() {
       email: "john.doe@example.com",
     },
   };
-  store.addTask(newTask);
+  taskStore.addTask(newTask);
   newTaskText.value = "";
 }
 </script>
