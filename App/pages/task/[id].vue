@@ -12,10 +12,12 @@ watchEffect(() => {
   }
 });
 
-const store = useTaskStore();
+const store = await useTaskStore();
+await store.fetchTasks();
 const task = computed(() => {
   return store.getTaskById(id);
 });
+
 const taskTitle = ref(task.value.title);
 const titleEditing = ref(false);
 const descriptionEditing = computed(() => {
@@ -58,9 +60,8 @@ function saveTitle() {
 
     return;
   } else {
-    task.value.updated_at = dayjs().format("DD-MM-YYYY HH:mm:ss");
     titleEditing.value = false;
-    store.updateTaskTitle(task.value.id, taskTitle.value);
+    store.updateTaskTitle(task.value.id, taskTitle.value, generateTimeStamp());
     Toastify({
       text: "Title saved succcessfully!!",
       className: "success-msg",
@@ -73,6 +74,10 @@ function saveTitle() {
       onClick: function () {}, // Callback after click
     }).showToast();
   }
+}
+
+function generateTimeStamp() {
+  return dayjs().format("DD-MM-YYYY HH:mm:ss");
 }
 
 function editTaskTitle() {
@@ -91,7 +96,7 @@ function editTaskTitle() {
   }).showToast();
 }
 function handleDescSave(id, desc) {
-  store.updateTaskDescription(id, desc);
+  store.updateTaskDescription(id, desc, generateTimeStamp());
   store.setEditingStatus(false);
 }
 </script>
