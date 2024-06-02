@@ -28,13 +28,13 @@ export const useTaskStore = defineStore("tasks", () => {
         console.log("ERROR OCCURED DELETING TASK");
         return;
       }
-      fetchTasks();
+      await fetchTasks();
     } catch (error) {
       console.log(error);
     }
   }
 
-  async function updateTaskDescription(taskId, newDescription) {
+  async function updateTaskDescription(taskId, newDescription, timeStamp) {
     const task = getTaskById(taskId);
     try {
       const response = await $fetch("/api/tasks", {
@@ -42,20 +42,20 @@ export const useTaskStore = defineStore("tasks", () => {
         body: JSON.stringify({
           task: task,
           action: "updateTaskDescription",
-          params: { description: newDescription },
+          params: { description: newDescription, updated_at: timeStamp },
         }),
       });
       if (!response) {
         console.log("ERROR OCCURED DELETING TASK");
         return;
       }
-      fetchTasks();
+      await fetchTasks();
     } catch (error) {
       console.log(error);
     }
   }
 
-  async function updateTaskTitle(taskId, newTitle) {
+  async function updateTaskTitle(taskId, newTitle, timeStamp) {
     const task = getTaskById(taskId);
     try {
       const response = await $fetch("/api/tasks", {
@@ -63,7 +63,7 @@ export const useTaskStore = defineStore("tasks", () => {
         body: JSON.stringify({
           task: task,
           action: "updateTaskTitle",
-          params: { title: newTitle },
+          params: { title: newTitle, updated_at: timeStamp },
         }),
       });
 
@@ -71,7 +71,7 @@ export const useTaskStore = defineStore("tasks", () => {
         console.log("ERROR OCCURED DELETING TASK");
         return;
       }
-      fetchTasks();
+      await fetchTasks();
     } catch (error) {
       console.log(error);
     }
@@ -82,13 +82,16 @@ export const useTaskStore = defineStore("tasks", () => {
     try {
       const response = await $fetch("/api/tasks", {
         method: "PATCH",
-        body: JSON.stringify({ task: task, action: "toggleTaskCompleted" }),
+        body: JSON.stringify({
+          task: task,
+          action: "toggleTaskCompleted",
+        }),
       });
       if (!response) {
-        console.log("ERROR OCCURED DELETING TASK");
+        console.log("Failed to toggle task");
         return;
       }
-      fetchTasks();
+      await fetchTasks();
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +108,7 @@ export const useTaskStore = defineStore("tasks", () => {
         console.log("ERROR OCCURED DELETING TASK");
         return;
       }
-      fetchTasks();
+      await fetchTasks();
     } catch (error) {
       console.log(error);
     }
