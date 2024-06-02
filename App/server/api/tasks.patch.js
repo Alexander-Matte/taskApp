@@ -2,6 +2,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { task, action } = body;
   let response;
+
   if (!action) {
     console.log("No action was passed!");
     return;
@@ -11,7 +12,9 @@ export default defineEventHandler(async (event) => {
       try {
         response = await $fetch(`http://localhost:4000/tasks/${task.id}`, {
           method: "PATCH",
-          body: JSON.stringify({ completed: !task.completed }),
+          body: JSON.stringify({
+            completed: !task.completed,
+          }),
         });
 
         if (response) {
@@ -26,7 +29,10 @@ export default defineEventHandler(async (event) => {
       try {
         response = await $fetch(`http://localhost:4000/tasks/${task.id}`, {
           method: "PATCH",
-          body: JSON.stringify({ title: body.params.title }),
+          body: JSON.stringify({
+            title: body.params.title,
+            updated_at: body.params.updated_at,
+          }),
         });
 
         if (response) {
@@ -42,7 +48,10 @@ export default defineEventHandler(async (event) => {
       try {
         response = await $fetch(`http://localhost:4000/tasks/${task.id}`, {
           method: "PATCH",
-          body: JSON.stringify({ description: body.params.description }),
+          body: JSON.stringify({
+            description: body.params.description,
+            updated_at: body.params.updated_at,
+          }),
         });
 
         if (response) {
