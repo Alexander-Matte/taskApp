@@ -23,11 +23,6 @@ function addTask() {
     status: "incomplete",
     created_at: dayjs().format("DD-MM-YYYY HH:mm:ss"),
     updated_at: "",
-    user: {
-      id: 1234,
-      name: "John Doe",
-      email: "john.doe@example.com",
-    },
   };
   store.addTask(newTask);
   newTaskText.value = "";

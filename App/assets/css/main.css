@@ -2,7 +2,8 @@
 
 #home-container {
   display: grid;
-  margin: 5px auto;
+  margin: 0 auto;
+  padding: 30px 15px 15px;
   height: 100vh;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 0.2fr 1fr 1fr 1fr;
@@ -29,6 +30,7 @@
 
 .body-content {
   grid-area: body-content;
+  margin-top: 1em;
 }
 
 .footer {
