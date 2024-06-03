@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@pinia/nuxt', "usebootstrap"],
+  modules: ['@pinia/nuxt', "usebootstrap", "nuxt-bootstrap-icons"],
   usebootstrap: {
     bootstrap: {
       prefix: ``

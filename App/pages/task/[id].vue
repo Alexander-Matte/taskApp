@@ -118,11 +118,11 @@ function handleDescriptionSave(id, desc) {
             class="btn"
           >
             Save Title
-            <i class="bi bi-floppy"></i>
+            <BootstrapIcon name="bi bi-floppy"></BootstrapIcon>
           </button>
           <button v-else type="button" @click="editTaskTitle" class="btn">
             Edit Title
-            <i class="bi bi-pencil"></i>
+            <BootstrapIcon name="bi bi-pencil"></BootstrapIcon>
           </button>
         </div>
         <div class="tool-bar-button">
@@ -133,7 +133,7 @@ function handleDescriptionSave(id, desc) {
             class="btn"
           >
             Mark task as incomplete
-            <i class="bi bi-x-circle"></i>
+            <BootstrapIcon name="bi bi-x-circle"></BootstrapIcon>
           </button>
           <button
             v-else-if="!titleEditing"
@@ -142,7 +142,7 @@ function handleDescriptionSave(id, desc) {
             class="btn"
           >
             Mark task as completed
-            <i class="bi bi-check2-circle"></i>
+            <BootstrapIcon name="bi bi-check2-circle"></BootstrapIcon>
           </button>
         </div>
         <div class="tool-bar-button">
@@ -153,7 +153,7 @@ function handleDescriptionSave(id, desc) {
             class="btn"
           >
             Save Description
-            <i class="bi bi-floppy"></i>
+            <BootstrapIcon name="bi bi-floppy"></BootstrapIcon>
           </button>
           <button
             v-else
@@ -162,7 +162,7 @@ function handleDescriptionSave(id, desc) {
             class="btn"
           >
             Edit Description
-            <i class="bi bi-pencil"></i>
+            <BootstrapIcon name="bi bi-pencil"></BootstrapIcon>
           </button>
         </div>
       </div>
@@ -201,7 +201,7 @@ function handleDescriptionSave(id, desc) {
               class="btn btn-sm"
               @click="store.setEditingStatus(true)"
             >
-              <i class="bi bi-pencil"></i>
+              <BootstrapIcon name="bi bi-pencil"></BootstrapIcon>
             </button>
           </div>
         </div>
@@ -221,7 +221,7 @@ function handleDescriptionSave(id, desc) {
               class="btn btn-sm"
               @click="handleDescriptionSave(task.id, description)"
             >
-              <i class="bi bi-pencil"></i>
+              <BootstrapIcon name="bi bi-floppy"></BootstrapIcon>
             </button>
           </div>
         </div>
@@ -234,6 +234,10 @@ function handleDescriptionSave(id, desc) {
 <style>
 .title-container h1 {
   gap: 10px;
+}
+
+i {
+  font-size: 1.5em;
 }
 
 .edit-icon {
