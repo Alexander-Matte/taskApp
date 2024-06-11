@@ -14,15 +14,16 @@ function addTask() {
   if (!newTaskText.value) {
     return;
   }
+
   const newTask = {
     id: generateTaskId(),
     title: newTaskText.value,
-    description: "",
-    due_date: "",
+    description: null,
+    due_date: null,
     priority: "med",
     status: "incomplete",
     created_at: dayjs().format("DD-MM-YYYY HH:mm:ss"),
-    updated_at: "",
+    updated_at: null,
   };
   store.addTask(newTask);
   newTaskText.value = "";
