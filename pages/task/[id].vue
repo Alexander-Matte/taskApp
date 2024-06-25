@@ -106,7 +106,7 @@ function handleDescriptionSave(id, desc) {
 }
 </script>
 <template>
-  <div class="container mt-5">
+  <div class="container w-50 mt-5">
     <NavBar />
     <div v-if="task" class="task-details">
       <div class="tool-bar d-flex pt-2 justify-content-between">

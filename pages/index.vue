@@ -4,8 +4,11 @@ import { ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
 const store = useTaskStore();
-
+const categories = ref([]);
+const isCategoryInputVisible = ref(false);
 const newTaskText = ref("");
+const newCategory = ref("");
+const categoryError = ref(null);
 const generateTaskId = () => {
   return uuidv4();
 };
@@ -28,19 +31,71 @@ function addTask() {
   store.addTask(newTask);
   newTaskText.value = "";
 }
+
+const toggleCategoryInput = () => {
+  isCategoryInputVisible.value = !isCategoryInputVisible.value;
+};
+
+const addCategory = () => {
+  categoryError.value = "";
+  if (newCategory.value.trim() !== "") {
+    // Check if the category already exists
+    const category = categories.value.find(
+      (cat) => cat === newCategory.value.trim()
+    );
+    if (category) {
+      categoryError.value = "Category with this name already exists.";
+      newCategory.value = "";
+      return;
+    }
+    categories.value.push(newCategory.value.trim());
+    newCategory.value = "";
+  } else {
+    categoryError.value = "Category name cannot be empty.";
+  }
+};
+
+const deleteCategory = (categoryToDelete) => {
+  categories.value = categories.value.filter(
+    (category) => category !== categoryToDelete
+  );
+};
 </script>
 
 <template>
   <div class="container" id="home-container">
     <div class="sidebar-header">
-      <div>Categories:</div>
+      <div class="d-flex flex-direction-column align-items-center">
+        <div>Categories</div>
+        <div @click="toggleCategoryInput">
+          <i v-if="!isCategoryInputVisible" class="bi bi-plus"></i>
+          <i v-else class="bi bi-dash"></i>
+        </div>
+      </div>
+
+      <div v-if="isCategoryInputVisible" class="category-input">
+        <input v-model="newCategory" type="text" placeholder="Add a category" />
+        <div class="categoryError" v-if="categoryError">
+          {{ categoryError }}
+        </div>
+        <button class="btn btn-primary" @click="addCategory">Add</button>
+      </div>
     </div>
     <div class="sidebar-content">
-      <ul>
-        <li>Test1</li>
-        <li>Test2</li>
-        <li>Test3</li>
-        <li>Test4</li>
+      <ul v-if="categories.length" class="category-list list-group mt-3">
+        <li
+          v-for="category in categories"
+          :key="category"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          {{ category }}
+          <button
+            class="btn btn-danger btn-sm"
+            @click="deleteCategory(category)"
+          >
+            <i class="bi bi-trash3"></i>
+          </button>
+        </li>
       </ul>
     </div>
     <div class="body-header">
@@ -80,3 +135,8 @@ function addTask() {
     </div>
   </div>
 </template>
+<style scoped>
+.categoryError {
+  color: red;
+}
+</style>
