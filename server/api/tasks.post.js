@@ -1,16 +1,20 @@
+import { serverSupabaseClient } from "#supabase/server";
+import { serverSupabaseUser } from "#supabase/server";
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
+  const supabase = await serverSupabaseClient(event);
+  const user = await serverSupabaseUser(event);
 
-  try {
-    const response = await $fetch(`http://localhost:4000/tasks`, {
-      method: "POST",
-      body: body,
-    });
+  const { data, error } = await supabase
+    .from("tasks")
+    .insert([{ title: body.title, user_id: user.id }])
+    .select();
 
-    if (response) {
-      return response;
-    }
-  } catch (error) {
-    return false;
+  if (error) {
+    console.log(error);
+    return;
   }
+
+  return data;
 });

@@ -1,36 +1,70 @@
 <script setup>
-import dayjs from "dayjs";
-import { ref } from "vue";
-import { v4 as uuidv4 } from "uuid";
+import { ref, computed } from "vue";
 
-const store = useTaskStore();
+definePageMeta({
+  middleware: "auth",
+});
+
+const supabase = useSupabaseClient();
+const user = ref(null);
+const error = ref(null);
+
+const fetchUser = async () => {
+  try {
+    const { data, error: fetchError } = await supabase.auth.getUser();
+    if (fetchError) {
+      error.value = fetchError;
+      user.value = null;
+    } else {
+      user.value = data.user;
+    }
+  } catch (e) {
+    error.value = e;
+  }
+};
+
+onMounted(async () => {
+  await fetchUser();
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+      user.value = session.user;
+    } else if (event === "SIGNED_OUT") {
+      user.value = null;
+    }
+  });
+});
+
 const categories = ref([]);
 const isCategoryInputVisible = ref(false);
-const newTaskText = ref("");
+const taskTitle = ref("");
 const newCategory = ref("");
 const categoryError = ref(null);
-const generateTaskId = () => {
-  return uuidv4();
-};
+
+async function handleSignOut() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.log("Error signing the user out!");
+    return;
+  }
+}
+
 // Create addTask function which add task to tasks
-function addTask() {
-  if (!newTaskText.value) {
+const addTask = async () => {
+  if (taskTitle.value.trim() === "") return;
+
+  const { data, error } = await useFetch("/api/tasks", {
+    method: "POST",
+    body: JSON.stringify({ title: taskTitle.value }),
+  });
+
+  if (!data) {
+    console.log("Error adding task!");
     return;
   }
 
-  const newTask = {
-    id: generateTaskId(),
-    title: newTaskText.value,
-    description: null,
-    due_date: null,
-    priority: "med",
-    status: "incomplete",
-    created_at: dayjs().format("DD-MM-YYYY HH:mm:ss"),
-    updated_at: null,
-  };
-  store.addTask(newTask);
-  newTaskText.value = "";
-}
+  taskTitle.value = "";
+};
 
 const toggleCategoryInput = () => {
   isCategoryInputVisible.value = !isCategoryInputVisible.value;
@@ -64,6 +98,26 @@ const deleteCategory = (categoryToDelete) => {
 
 <template>
   <div class="container" id="home-container">
+    <div class="site-header">
+      <div v-if="!user">
+        <div class="alert alert-warning text-center" role="alert">
+          Trial Mode: You are not signed in, therfore your Tasks will only be
+          saved to local storage. To persist tasks to the Database, then please
+          login or signup.
+        </div>
+      </div>
+      <div class="site-header-container d-flex justify-content-end">
+        <div>
+          <p v-if="user">
+            Hello {{ user.email }}
+            <button @click="handleSignOut">Logout</button>
+          </p>
+          <p v-else>
+            <NuxtLink to="/login"> Login | Register </NuxtLink>
+          </p>
+        </div>
+      </div>
+    </div>
     <div class="sidebar-header">
       <div class="d-flex flex-direction-column align-items-center">
         <div>Categories</div>
@@ -82,7 +136,7 @@ const deleteCategory = (categoryToDelete) => {
       </div>
     </div>
     <div class="sidebar-content">
-      <ul v-if="categories.length" class="category-list list-group mt-3">
+      <ul v-if="categories" class="category-list list-group mt-3">
         <li
           v-for="category in categories"
           :key="category"
@@ -107,7 +161,7 @@ const deleteCategory = (categoryToDelete) => {
           <form @submit.prevent="addTask">
             <div class="input-group">
               <input
-                v-model="newTaskText"
+                v-model="taskTitle"
                 type="text"
                 class="form-control"
                 placeholder="Add new task"

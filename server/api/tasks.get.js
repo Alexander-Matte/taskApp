@@ -1,10 +1,18 @@
+import { serverSupabaseClient } from "#supabase/server";
+import { serverSupabaseUser } from "#supabase/server";
+
 export default defineEventHandler(async (event) => {
+  const supabase = await serverSupabaseClient(event);
+  const user = await serverSupabaseUser(event);
+
   try {
-    const response = await $fetch("http://localhost:4000/tasks");
-    if (response) {
-      return response;
+    const { data, error } = await supabase.from("tasks").select("*");
+
+    if (error) {
+      return error;
     }
+    return data;
   } catch (error) {
-    return false;
+    throw new Error("ERROR FETCHING DATA!!!");
   }
 });

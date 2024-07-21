@@ -1,70 +1,27 @@
+import { serverSupabaseClient, serverSupabaseUser } from "#supabase/server";
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const { task, action } = body;
-  let response;
 
-  if (!action) {
-    console.log("No action was passed!");
-    return;
+  const supabase = await serverSupabaseClient(event);
+  const user = await serverSupabaseUser(event);
+  console.log(body.id, body.completed);
+
+  const { data, error } = await supabase
+    .from("tasks")
+    .update({ completed: !body.completed })
+    .eq("id", body.id)
+    .eq("user_id", user.id)
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Failed To make patch for toggling complete",
+      message: error.message,
+    });
   }
-  switch (action) {
-    case "toggleTaskCompleted":
-      try {
-        response = await $fetch(`http://localhost:4000/tasks/${task.id}`, {
-          method: "PATCH",
-          body: JSON.stringify({
-            completed: !task.completed,
-          }),
-        });
 
-        if (response) {
-          return response;
-        }
-      } catch (error) {
-        return false;
-      }
-
-      break;
-    case "updateTaskTitle":
-      try {
-        response = await $fetch(`http://localhost:4000/tasks/${task.id}`, {
-          method: "PATCH",
-          body: JSON.stringify({
-            title: body.params.title,
-            updated_at: body.params.updated_at,
-          }),
-        });
-
-        if (response) {
-          return response;
-        }
-      } catch (error) {
-        return false;
-      }
-
-      break;
-
-    case "updateTaskDescription":
-      try {
-        response = await $fetch(`http://localhost:4000/tasks/${task.id}`, {
-          method: "PATCH",
-          body: JSON.stringify({
-            description: body.params.description,
-            updated_at: body.params.updated_at,
-          }),
-        });
-
-        if (response) {
-          return response;
-        }
-      } catch (error) {
-        return false;
-      }
-
-      break;
-
-    default:
-      console.log("Default was reached");
-      break;
-  }
+  return { data };
 });
